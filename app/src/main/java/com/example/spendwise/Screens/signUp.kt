@@ -157,17 +157,7 @@ fun SignUp() {
                     letterSpacing = 0.9.sp
                 )
             )
-//            TextButton(onClick = { /*TODO*/ }) {
-//                Text(text = "Log in",
-//                    style = TextStyle(
-//                        fontFamily = Inter,
-//                        fontWeight = FontWeight.Medium,
-//                        fontSize = 13.sp,
-//                        letterSpacing = 0.5.sp
-//                    )
-//                )
-//            }
-//        }
+
             Text(
                 text = "Send again",
                 style = TextStyle(
