@@ -20,6 +20,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,23 +32,26 @@ import com.example.spendwise.R
 import com.example.spendwise.ui.theme.Inter
 
 @Composable
-fun optVerification() {
+fun optVerification(navigationToHome: () -> Unit) {
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center) {
+        horizontalAlignment = Alignment.CenterHorizontally) {
         Image(painter = painterResource(id = R.drawable.enterotp), contentDescription ="opt Verification",
-            modifier = Modifier.size(350.dp) )
+            modifier = Modifier.size(350.dp),
+            alignment = Alignment.Center)
         Spacer(modifier = Modifier.padding(10.dp))
-        Text(text = "Enter OTP", modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp, bottom = 10.dp),
+        Text(
+            text = "Enter OTP",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp, bottom = 10.dp),
             textAlign = TextAlign.Center,
             fontFamily = Inter,
             fontWeight = FontWeight.Bold,
             fontSize = 25.sp,
-            letterSpacing = 1.5.sp
+            letterSpacing = 1.5.sp,
+            color = colorResource(id = R.color.grey)
         )
         OutlinedTextField(value = "OTP",
             onValueChange = {},
@@ -65,7 +69,9 @@ fun optVerification() {
         )
         OutlinedButton(onClick = { /*TODO*/ },
             shape = RoundedCornerShape(10.dp),
-            modifier = Modifier.fillMaxWidth(0.85f).padding(15.dp)) {
+            modifier = Modifier
+                .fillMaxWidth(0.85f)
+                .padding(15.dp)) {
             Text(text = "Verify",
                 style = TextStyle(
                     fontFamily = Inter,
@@ -92,9 +98,12 @@ fun optVerification() {
                     fontFamily = Inter,
                     fontWeight = FontWeight.Medium,
                     fontSize = 13.sp,
-                    letterSpacing = 0.9.sp
+                    letterSpacing = 0.9.sp,
+                    color = colorResource(id = R.color.red)
                 ),
-                modifier = Modifier.clickable {  }.padding(start = 8.dp)
+                modifier = Modifier
+                    .clickable { }
+                    .padding(start = 8.dp)
             )
 
         }
@@ -105,5 +114,5 @@ fun optVerification() {
 @Preview(showBackground = true)
 @Composable
 private fun optVerificationPreview() {
-    optVerification()
+    optVerification({})
 }

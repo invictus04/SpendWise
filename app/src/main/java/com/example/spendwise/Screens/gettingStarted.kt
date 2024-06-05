@@ -28,7 +28,7 @@ import com.example.spendwise.R
 import com.example.spendwise.ui.theme.Inter
 
 @Composable
-fun gettingStarted() {
+fun gettingStarted(navigationToSignUp: () -> Unit, navigationToRegister: () -> Unit) {
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(10.dp)
@@ -89,5 +89,5 @@ fun gettingStarted() {
 @Preview(showBackground = true)
 @Composable
 private fun gettingStartedPreview() {
-    gettingStarted()
+    gettingStarted({}, {})
 }
