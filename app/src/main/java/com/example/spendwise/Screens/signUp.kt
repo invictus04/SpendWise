@@ -17,6 +17,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -29,11 +33,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.spendwise.R
+import com.example.spendwise.screen
 import com.example.spendwise.ui.theme.Inter
 
 @Composable
-fun SignUp(NavigationToOtp:() -> Unit) {
+fun SignUp(navController: NavController) {
+    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var contact by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -41,20 +53,20 @@ fun SignUp(NavigationToOtp:() -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.calculator),
+            painter = painterResource(id = R.drawable.signup),
             contentDescription = "Sign Up page",
             modifier = Modifier.size(280.dp)
         )
-//            Icon(imageVector = ImageVector.vectorResource(id = R.drawable), contentDescription = )
-        Spacer(modifier = Modifier.padding(top = 48.dp))
+        Spacer(modifier = Modifier.padding(top = 38.dp))
 
         OutlinedTextField(
-            value = "username",
-            onValueChange = {},
+            value = username,
+            onValueChange = {username = it},
+            label = { Text(text = "username")},
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .padding(bottom = 15.dp)
-                .size(50.dp),
+                .size(60.dp),
             shape = RoundedCornerShape(percent = 50),
             textStyle = TextStyle(
                 fontFamily = Inter,
@@ -65,12 +77,13 @@ fun SignUp(NavigationToOtp:() -> Unit) {
         )
 
         OutlinedTextField(
-            value = "email address",
-            onValueChange = {},
+            value = email,
+            onValueChange = {email = it},
+            label = { Text(text = "email Address")},
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .padding(bottom = 15.dp)
-                .size(50.dp),
+                .size(60.dp),
             shape = RoundedCornerShape(percent = 50),
             textStyle = TextStyle(
                 fontFamily = Inter,
@@ -81,12 +94,13 @@ fun SignUp(NavigationToOtp:() -> Unit) {
         )
 
         OutlinedTextField(
-            value = "phone number",
-            onValueChange = {},
+            value = contact,
+            onValueChange = {contact = it},
+            label = { Text(text = "phone number")},
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .padding(bottom = 15.dp)
-                .size(50.dp),
+                .size(60.dp),
             shape = RoundedCornerShape(percent = 50),
             textStyle = TextStyle(
                 fontFamily = Inter,
@@ -97,12 +111,13 @@ fun SignUp(NavigationToOtp:() -> Unit) {
         )
 
         OutlinedTextField(
-            value = "password",
-            onValueChange = {},
+            value = password,
+            onValueChange = {password = it},
+            label = { Text(text = "password")},
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .padding(bottom = 15.dp)
-                .size(50.dp),
+                .size(60.dp),
             shape = RoundedCornerShape(percent = 50),
             textStyle = TextStyle(
                 fontFamily = Inter,
@@ -113,12 +128,13 @@ fun SignUp(NavigationToOtp:() -> Unit) {
         )
 
         OutlinedTextField(
-            value = "confirm password",
-            onValueChange = {},
+            value = confirmPassword,
+            onValueChange = {confirmPassword = it},
+            label = { Text(text = "Confirm Password")},
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .padding(bottom = 15.dp)
-                .size(50.dp),
+                .size(60.dp),
             shape = RoundedCornerShape(percent = 50),
             textStyle = TextStyle(
                 fontFamily = Inter,
@@ -129,7 +145,7 @@ fun SignUp(NavigationToOtp:() -> Unit) {
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate(screen.otpVerification.route)},
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier.fillMaxWidth(0.85f)
         ) {
@@ -160,7 +176,7 @@ fun SignUp(NavigationToOtp:() -> Unit) {
             )
 
             Text(
-                text = "Send again",
+                text = "login",
                 style = TextStyle(
                     fontFamily = Inter,
                     fontWeight = FontWeight.Medium,
@@ -169,7 +185,7 @@ fun SignUp(NavigationToOtp:() -> Unit) {
                     color = colorResource(id = R.color.red)
                 ),
                 modifier = Modifier
-                    .clickable { }
+                    .clickable { navController.navigate(screen.login.route) }
                     .padding(start = 8.dp)
             )
 
@@ -181,5 +197,5 @@ fun SignUp(NavigationToOtp:() -> Unit) {
 @Preview(showBackground = true)
 @Composable
 private fun SignUpPreview() {
-    SignUp({})
+    SignUp(rememberNavController())
 }

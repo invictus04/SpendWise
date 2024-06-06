@@ -1,5 +1,6 @@
 package com.example.spendwise.Screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,8 +19,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -28,16 +33,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.spendwise.R
+import com.example.spendwise.screen
 import com.example.spendwise.ui.theme.Inter
 
 @Composable
-fun optVerification(navigationToHome: () -> Unit) {
+fun optverification(navController: NavController) {
+    val otp by remember {
+        mutableStateOf("")
+    }
     Column(modifier = Modifier
         .fillMaxSize()
-        .padding(8.dp),
+        .padding(top = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(painter = painterResource(id = R.drawable.enterotp), contentDescription ="opt Verification",
+        Image(painter = painterResource(id = R.drawable.otp), contentDescription ="opt Verification",
             modifier = Modifier.size(350.dp),
             alignment = Alignment.Center)
         Spacer(modifier = Modifier.padding(10.dp))
@@ -53,12 +64,14 @@ fun optVerification(navigationToHome: () -> Unit) {
             letterSpacing = 1.5.sp,
             color = colorResource(id = R.color.grey)
         )
-        OutlinedTextField(value = "OTP",
-            onValueChange = {},
+        var cotp = otp.toString()
+        OutlinedTextField(value = cotp,
+            onValueChange = {cotp = it},
+            label = { Text(text = "otp")},
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .padding(horizontal = 15.dp, vertical = 5.dp)
-                .size(50.dp),
+                .size(60.dp),
             shape = RoundedCornerShape(percent = 50),
             textStyle = TextStyle(
                 fontFamily = Inter,
@@ -67,7 +80,7 @@ fun optVerification(navigationToHome: () -> Unit) {
                 letterSpacing = 1.1.sp
             )
         )
-        OutlinedButton(onClick = { /*TODO*/ },
+        OutlinedButton(onClick = { navController.navigate(screen.home.route) },
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .fillMaxWidth(0.85f)
@@ -114,5 +127,5 @@ fun optVerification(navigationToHome: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 private fun optVerificationPreview() {
-    optVerification({})
+    optverification(navController = rememberNavController())
 }
