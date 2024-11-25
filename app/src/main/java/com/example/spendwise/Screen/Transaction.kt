@@ -21,6 +21,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -178,7 +179,11 @@ fun DataBox(modifier: Modifier = Modifier, onAddExpenseClick: (model: ExpenseEnt
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { dateDialogVisibility.value = true },
-            enabled = false
+            enabled = false,
+            colors =  OutlinedTextFieldDefaults.colors(
+                disabledBorderColor = Color.Black,
+                disabledTextColor = Color.Black
+            )
         )
         Spacer(modifier = Modifier.size(8.dp))
         // dropdown

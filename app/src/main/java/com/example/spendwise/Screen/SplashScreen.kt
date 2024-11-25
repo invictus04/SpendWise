@@ -43,7 +43,7 @@ fun SplashScreen(navController: NavController) {
                     OvershootInterpolator(5f).getInterpolation(it)
                 }))
         delay(1500L)
-        navController.navigate("/home")
+        navController.navigate("/start")
     }
 
 
