@@ -8,6 +8,7 @@ import com.example.spendwise.Screen.GettingStarted
 import com.example.spendwise.Screen.HomeScreen
 import com.example.spendwise.Screen.SplashScreen
 import com.example.spendwise.Screen.addTransation
+import com.example.spendwise.Screen.allExpensesScreen
 
 @Composable
 fun NavHostScreen() {
@@ -21,6 +22,9 @@ fun NavHostScreen() {
         }
         composable("/home"){
             HomeScreen(navController)
+        }
+        composable("/all"){
+            allExpensesScreen()
         }
         composable("/add"){
             addTransation(navController)

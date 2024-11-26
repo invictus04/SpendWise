@@ -1,5 +1,6 @@
 package com.example.spendwise.Screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.spendwise.Data.model.ExpenseEntity
 import com.example.spendwise.R
 import com.example.spendwise.ui.theme.Inter
@@ -44,6 +46,7 @@ import com.example.spendwise.viewModel.HomeViewModelFactory
 fun HomeScreen(navController: NavController) {
     val viewModel: HomeViewModel =
         HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
+    val context = LocalContext.current
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -82,7 +85,13 @@ fun HomeScreen(navController: NavController) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_bell),
                     contentDescription = null,
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .clickable {
+                            Toast
+                                .makeText(context, "The button is clicked", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                 )
             }
             val state = viewModel.expenses.collectAsState(initial = emptyList())
@@ -102,14 +111,20 @@ fun HomeScreen(navController: NavController) {
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom)
                 height = Dimension.fillToConstraints
-            }, list = state.value, viewModel)
+            }, list = state.value, viewModel, navController)
 
-            Image(painter = painterResource(id = R.drawable.add_icon), contentDescription = null, modifier = Modifier.constrainAs(add){
-                bottom.linkTo(parent.bottom)
-                end.linkTo(parent.end)
-            }. size(48.dp).clip(CircleShape).clickable {
-                navController.navigate("/add")
-            } )
+            Image(painter = painterResource(id = R.drawable.add_icon),
+                contentDescription = null,
+                modifier = Modifier
+                    .constrainAs(add) {
+                        bottom.linkTo(parent.bottom)
+                        end.linkTo(parent.end)
+                    }
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .clickable {
+                        navController.navigate("/add")
+                    })
 
         }
     }
@@ -150,7 +165,9 @@ fun CardItem(modifier: Modifier, balance: String, income: String, expenses: Stri
             Image(
                 painter = painterResource(id = R.drawable.ic_menu_dots),
                 contentDescription = null,
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .clickable { }
             )
         }
 
@@ -201,7 +218,7 @@ fun CardRowItem(modifier: Modifier, title: String, amount: String, image: Int) {
 }
 
 @Composable
-fun TransactionList(modifier: Modifier, list: List<ExpenseEntity>, viewModel: HomeViewModel) {
+fun TransactionList(modifier: Modifier, list: List<ExpenseEntity>, viewModel: HomeViewModel, navController: NavController) {
     LazyColumn(modifier = modifier.padding(horizontal = 16.dp)) {
         item {
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -215,9 +232,11 @@ fun TransactionList(modifier: Modifier, list: List<ExpenseEntity>, viewModel: Ho
                     text = "See All",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light,
-                    modifier = Modifier.align(
-                        Alignment.CenterEnd
-                    ),
+                    modifier = Modifier
+                        .align(
+                            Alignment.CenterEnd
+                        )
+                        .clickable {navController.navigate("/all") },
                     fontFamily = Inter
                 )
             }
@@ -270,8 +289,30 @@ fun TransactionItem(title: String, amount: String, icon: Int, date: String, colo
 
 }
 
+
+@Composable
+fun allExpensesScreen() {
+    val viewModel: HomeViewModel =
+        HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
+    val state = viewModel.expenses.collectAsState(initial = emptyList())
+    Surface(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier.padding(16.dp)) {
+            items(state.value) { item ->
+                val icon = viewModel.getItemIcon(item)
+                TransactionItem(
+                    title = item.title,
+                    amount = item.amount.toString(),
+                    icon = icon!!,
+                    date = item.date,
+                    color = if (item.type == "Income") Color.Green else Color.Red
+                )
+            }
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-//    HomeScreen()
+    HomeScreen(rememberNavController())
 }
