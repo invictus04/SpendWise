@@ -24,7 +24,7 @@ fun NavHostScreen() {
             HomeScreen(navController)
         }
         composable("/all"){
-            allExpensesScreen()
+            allExpensesScreen(navController)
         }
         composable("/add"){
             addTransation(navController)

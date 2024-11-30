@@ -60,7 +60,6 @@ fun addTransation(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
 
     Surface(
-
         modifier = Modifier.fillMaxSize()
     ) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -97,7 +96,9 @@ fun addTransation(navController: NavController) {
                 )
                 Image(
                     painter = painterResource(id = R.drawable.ic_back), contentDescription = null,
-                    modifier = Modifier.align(Alignment.CenterStart)
+                    modifier = Modifier.align(Alignment.CenterStart).clickable {
+                        navController.popBackStack()
+                    }
                 )
             }
 
