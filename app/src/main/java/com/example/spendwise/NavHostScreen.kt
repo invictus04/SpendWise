@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.spendwise.Screen.GettingStarted
 import com.example.spendwise.Screen.HomeScreen
 import com.example.spendwise.Screen.SplashScreen
+import com.example.spendwise.Screen.StatsScreen
 import com.example.spendwise.Screen.addTransation
 import com.example.spendwise.Screen.allExpensesScreen
 
@@ -28,6 +29,9 @@ fun NavHostScreen() {
         }
         composable("/add"){
             addTransation(navController)
+        }
+        composable("/stats"){
+            StatsScreen(navController)
         }
     }
 }

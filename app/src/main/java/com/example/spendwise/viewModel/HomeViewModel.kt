@@ -11,6 +11,8 @@ import com.example.spendwise.Utils
 
 class HomeViewModel(dao: ExpenseDao): ViewModel() {
     val expenses = dao.getAllExpenses()
+    val spending = dao.getTopExpenses()
+    val income = dao.getTopIncome()
 
 
     fun getBalance(list: List<ExpenseEntity>): String{

@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.example.spendwise"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.spendwise"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -80,5 +80,10 @@ dependencies {
     implementation(libs.ui)
     implementation(libs.androidx.material)
     implementation(libs.ui.tooling.preview)
+
+    implementation(libs.core)
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m2)
+    implementation(libs.vico.compose.m3)
 
 }

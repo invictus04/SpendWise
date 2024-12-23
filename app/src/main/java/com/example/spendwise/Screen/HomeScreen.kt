@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -277,7 +280,7 @@ fun TransactionList(
             TransactionItem(
                 title = item.title,
                 amount = item.amount.toString(),
-                icon = icon!!,
+                icon = icon,
                 date = item.date,
                 color = if (item.type == "Income") Color.Green else Color.Red
             )
@@ -330,7 +333,7 @@ fun allExpensesScreen(navController: NavController) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = { BottomBar(navController = rememberNavController()) },
-        topBar = { TopAppBar(name = "All Expenses", onBackClick = { navController.popBackStack() })}
+        topBar = { TopAppBar(name = "All Expenses", onBackClick = { navController.popBackStack() }, icon = Icons.Default.Info)}
     ) { innerPadding ->
         Surface(modifier = Modifier
             .fillMaxSize()
@@ -343,11 +346,12 @@ fun allExpensesScreen(navController: NavController) {
                     modifier = Modifier
                         .constrainAs(lazyColumn) {
                             top.linkTo(parent.top)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
+//                            start.linkTo(parent.start)
+//                            end.linkTo(parent.end)
+//                            bottom.linkTo(parent.bottom)
                         }
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Top
                 ) {
                     items(state.value) { item ->
                         val icon = viewModel.getItemIcon(item)
@@ -381,7 +385,7 @@ fun BottomBar(navController: NavController) {
         })
         BottomNavigationItem(
             selected = false,
-            onClick = { navController.navigate("/analysis") },
+            onClick = { navController.navigate("/stats") },
             icon = {
                 Icon(
                     contentDescription = null,
@@ -410,7 +414,7 @@ fun BottomBar(navController: NavController) {
 
 
 @Composable
-fun TopAppBar(name: String, onBackClick: () -> Unit) {
+fun TopAppBar(name: String, onBackClick: () -> Unit, icon: ImageVector) {
     TopAppBar(title = {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -435,7 +439,7 @@ fun TopAppBar(name: String, onBackClick: () -> Unit) {
         actions = {
             IconButton(onClick = {}) {
                 Icon(
-                    imageVector = Icons.Default.Settings,
+                    imageVector = icon,
                     contentDescription = "Download"
                 )
             }

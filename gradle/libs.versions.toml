@@ -1,6 +1,7 @@
 [versions]
 agp = "8.3.1"
 constraintlayoutCompose = "1.1.0"
+core = "1.9.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.0"
 junit = "4.13.2"
@@ -13,12 +14,14 @@ material = "1.7.5"
 navigationCompose = "2.8.4"
 ui = "1.7.5"
 uiToolingPreview = "1.7.5"
+vico = "2.0.0-beta.3"
 
 [libraries]
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+core = { module = "com.patrykandpatrick.vico:core", version.ref = "core" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -35,6 +38,9 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 #androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
+vico-compose-m2 = { group = "com.patrykandpatrick.vico", name = "compose-m2", version.ref = "vico" }
+vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
