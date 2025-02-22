@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.spendwise.NavScreen
+import com.example.spendwise.OnBoardingRoutes
 import com.example.spendwise.ui.theme.Inter
 import com.example.spendwise.ui.theme.dark
 import com.example.spendwise.ui.theme.light
@@ -43,7 +45,7 @@ fun SplashScreen(navController: NavController) {
                     OvershootInterpolator(5f).getInterpolation(it)
                 }))
         delay(1500L)
-        navController.navigate("/start")
+        navController.navigate(OnBoardingRoutes.GettingStarted.route)
     }
 
 

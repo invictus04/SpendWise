@@ -19,24 +19,31 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomAppBar
+import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.FabPosition
-import androidx.compose.material.IconButton
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,8 +54,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.spendwise.BottomNavigation
 import com.example.spendwise.Data.model.ExpenseEntity
+import com.example.spendwise.NavHostScreen
+import com.example.spendwise.NavScreen
 import com.example.spendwise.R
 import com.example.spendwise.ui.theme.Inter
 import com.example.spendwise.ui.theme.Zinc
@@ -56,27 +67,9 @@ import com.example.spendwise.viewModel.HomeViewModel
 import com.example.spendwise.viewModel.HomeViewModelFactory
 
 @Composable
-fun HomeScreen(navController: NavController) {
-    val viewModel: HomeViewModel =
-        HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
-    val context = LocalContext.current
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = { BottomBar(navController) },
-        floatingActionButton = {
-            Image(painter = painterResource(id = R.drawable.ic_add),
-                contentDescription = null, modifier = Modifier
-                    .size(60.dp)
-                    .clickable {
-                        navController.navigate("/add")
-                    })
-        },
-        floatingActionButtonPosition = FabPosition.Center,
-        isFloatingActionButtonDocked = true
-
-    ) { unit ->
+fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
         Surface(
-            modifier = Modifier.fillMaxSize().padding(unit)
+            modifier = Modifier.fillMaxSize()
         ) {
             ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                 val (nameRow, list, card, topBar, add) = createRefs()
@@ -117,9 +110,9 @@ fun HomeScreen(navController: NavController) {
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
                             .clickable {
-                                Toast
-                                    .makeText(context, "The button is clicked", Toast.LENGTH_SHORT)
-                                    .show()
+//                                Toast
+//                                    .makeText(context, "The button is clicked", Toast.LENGTH_SHORT)
+//                                    .show()
                             }
                     )
                 }
@@ -141,23 +134,8 @@ fun HomeScreen(navController: NavController) {
                     bottom.linkTo(parent.bottom)
                     height = Dimension.fillToConstraints
                 }, list = state.value, viewModel, navController)
-
-//            Image(painter = painterResource(id = R.drawable.add_icon),
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .constrainAs(add) {
-//                        bottom.linkTo(parent.bottom)
-//                        end.linkTo(parent.end)
-//                    }
-//                    .size(48.dp)
-//                    .clip(CircleShape)
-//                    .clickable {
-//                        navController.navigate("/add")
-//                    })
-
             }
         }
-    }
 }
 
 @Composable
@@ -270,7 +248,7 @@ fun TransactionList(
                         .align(
                             Alignment.CenterEnd
                         )
-                        .clickable { navController.navigate("/all") },
+                        .clickable { navController.navigate(NavScreen.All.route) },
                     fontFamily = Inter
                 )
             }
@@ -326,29 +304,18 @@ fun TransactionItem(title: String, amount: String, icon: Int, date: String, colo
 
 @Composable
 fun allExpensesScreen(navController: NavController) {
-    val viewModel: HomeViewModel =
-        HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
+    val viewModel: HomeViewModel = HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
+
     val state = viewModel.expenses.collectAsState(initial = emptyList())
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = { BottomBar(navController = rememberNavController()) },
-        topBar = { TopAppBar(name = "All Expenses", onBackClick = { navController.popBackStack() }, icon = Icons.Default.Info)}
-    ) { innerPadding ->
-        Surface(modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)) {
-
+        Surface(modifier = Modifier.fillMaxSize())
+        {
             ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-                // Create references for the TopAppBar, LazyColumn, and BottomBar
                 val (lazyColumn) = createRefs()
                 LazyColumn(
                     modifier = Modifier
                         .constrainAs(lazyColumn) {
                             top.linkTo(parent.top)
-//                            start.linkTo(parent.start)
-//                            end.linkTo(parent.end)
-//                            bottom.linkTo(parent.bottom)
                         }
                         .padding(16.dp),
                     verticalArrangement = Arrangement.Top
@@ -368,85 +335,11 @@ fun allExpensesScreen(navController: NavController) {
             }
         }
     }
-}
 
 
-@Composable
-fun BottomBar(navController: NavController) {
-    BottomAppBar(
-        backgroundColor = Color.White,
-        cutoutShape = CircleShape
-    ) {
-        BottomNavigationItem(selected = true, onClick = { }, icon = {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_home),
-                contentDescription = null
-            )
-        })
-        BottomNavigationItem(
-            selected = false,
-            onClick = { navController.navigate("/stats") },
-            icon = {
-                Icon(
-                    contentDescription = null,
-                    painter = painterResource(id = R.drawable.ic_analysis)
-                )
-            },
-            modifier = Modifier.padding(end = 8.dp)
-        )
-        BottomNavigationItem(
-            selected = false,
-            onClick = { navController.navigate("/profile") },
-            icon = {
-                Icon(
-                    contentDescription = null,
-                    painter = painterResource(id = R.drawable.ic_user)
-                )
-            })
-        BottomNavigationItem(selected = false, onClick = { /*TODO*/ }, icon = {
-            Icon(
-                contentDescription = null,
-                painter = painterResource(id = R.drawable.ic_user)
-            )
-        })
-    }
-}
 
 
-@Composable
-fun TopAppBar(name: String, onBackClick: () -> Unit, icon: ImageVector) {
-    TopAppBar(title = {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
-                text = name,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Center,
-                fontFamily = Inter
-            )
-            Spacer(modifier = Modifier.weight(1f))
-        }
-    },
-        backgroundColor = Color.White,
-        navigationIcon = {
-            IconButton(onClick = { onBackClick() }) {
-                Icon(painter = painterResource(id = R.drawable.ic_back), contentDescription = null)
-            }
-        },
-        actions = {
-            IconButton(onClick = {}) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = "Download"
-                )
-            }
-        })
-}
-
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
 //    HomeScreen(rememberNavController())

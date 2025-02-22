@@ -14,18 +14,21 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -44,10 +47,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.spendwise.Data.model.ExpenseEntity
 import com.example.spendwise.R
 import com.example.spendwise.Utils
 import com.example.spendwise.ui.theme.Inter
+import com.example.spendwise.ui.theme.light
 import com.example.spendwise.viewModel.AddExpenseViewModel
 import com.example.spendwise.viewModel.AddExpenseViewModelFactory
 import kotlinx.coroutines.launch
@@ -96,9 +101,11 @@ fun addTransation(navController: NavController) {
                 )
                 Image(
                     painter = painterResource(id = R.drawable.ic_back), contentDescription = null,
-                    modifier = Modifier.align(Alignment.CenterStart).clickable {
-                        navController.popBackStack()
-                    }
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .clickable {
+                            navController.popBackStack()
+                        }
                 )
             }
 
@@ -173,15 +180,16 @@ fun DataBox(modifier: Modifier = Modifier, onAddExpenseClick: (model: ExpenseEnt
         //date
         Text(text = "DATE", fontSize = 16.sp, color = Color.Gray, fontFamily = Inter)
         Spacer(modifier = Modifier.size(4.dp))
-        OutlinedTextField(value = if (date.value == 0L) "" else Utils.formatDateToHumanReadableFormat(
-            date.value
-        ),
+        OutlinedTextField(
+            value = if (date.value == 0L) "" else Utils.formatDateToHumanReadableFormat(
+                date.value
+            ),
             onValueChange = {},
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { dateDialogVisibility.value = true },
             enabled = false,
-            colors =  OutlinedTextFieldDefaults.colors(
+            colors = OutlinedTextFieldDefaults.colors(
                 disabledBorderColor = Color.Black,
                 disabledTextColor = Color.Black
             )
@@ -223,7 +231,13 @@ fun DataBox(modifier: Modifier = Modifier, onAddExpenseClick: (model: ExpenseEnt
                 onAddExpenseClick(model)
             }, modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(16.dp)
+                .padding(16.dp),
+            colors = ButtonColors(
+                contentColor = Color.Gray,
+                containerColor = light,
+                disabledContentColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent
+            )
         ) {
             Text(text = "ADD", fontSize = 14.sp, color = Color.White, fontFamily = Inter)
         }
@@ -275,21 +289,38 @@ fun ExpenseDropDown(listOfItems: List<String>, onSelectedItems: (item: String) -
         mutableStateOf<String>(listOfItems[0])
     }
 
-    ExposedDropdownMenuBox(expanded = expanded.value, onExpandedChange = { expanded.value = !expanded.value }) {
-        TextField(value = selectedItem.value, onValueChange = {  },
+    ExposedDropdownMenuBox(
+        expanded = expanded.value,
+        onExpandedChange = { expanded.value = !expanded.value }) {
+        TextField(
+            colors = T,
+            value = selectedItem.value, onValueChange = { },
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(), readOnly = true, trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value)
             })
 
-        ExposedDropdownMenu(expanded = expanded.value, onDismissRequest = { expanded.value=false }) {
+        ExposedDropdownMenu(
+            containerColor = Color.White,
+            expanded = expanded.value,
+            onDismissRequest = { expanded.value = false }) {
             listOfItems.forEach {
-                DropdownMenuItem(text = { Text(text = it, fontFamily = Inter) }, onClick = {
+                DropdownMenuItem(
+                    text = { Text(text = it, fontFamily = Inter) }, onClick = {
                     selectedItem.value = it
                     onSelectedItems(it)
                     expanded.value = false
-                })
+                },
+                    colors = MenuItemColors(
+                        textColor = Color.DarkGray,
+                        disabledTextColor = Color.DarkGray ,
+                        disabledLeadingIconColor = Color.DarkGray ,
+                        disabledTrailingIconColor = Color.DarkGray,
+                        leadingIconColor = Color.DarkGray,
+                        trailingIconColor = Color.DarkGray
+                    )
+                )
             }
         }
     }
@@ -298,5 +329,5 @@ fun ExpenseDropDown(listOfItems: List<String>, onSelectedItems: (item: String) -
 @Preview
 @Composable
 private fun addTransactionPreview() {
-//    addTransation()
+    addTransation(rememberNavController())
 }

@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.spendwise.BottomNavigation
+import com.example.spendwise.NavScreen
 import com.example.spendwise.R
 import com.example.spendwise.ui.theme.Inter
 import com.example.spendwise.ui.theme.Zinc
@@ -66,7 +68,7 @@ fun GettingStarted(navController: NavController) {
                     start.linkTo(parent.start)
                 })
 
-            Button(onClick = { navController.navigate("/home")},
+            Button(onClick = { navController.navigate(BottomNavigation.Home.route)},
                 colors = ButtonDefaults.buttonColors(
                     containerColor = light,
                     contentColor = Color.White

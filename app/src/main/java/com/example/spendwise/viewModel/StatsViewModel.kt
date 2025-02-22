@@ -22,6 +22,8 @@ class StatsViewModel(val dao: ExpenseDao): ViewModel() {
             LineCartesianLayerModel.Entry(x=formattedDate.toFloat(), y= expense.total_amount.toFloat())
         }
     }
+
+
 }
 
 class StatsViewModelFactory(private  val context: Context): ViewModelProvider.Factory{

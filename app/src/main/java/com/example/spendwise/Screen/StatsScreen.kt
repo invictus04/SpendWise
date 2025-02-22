@@ -3,19 +3,16 @@ package com.example.spendwise.Screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.runtime.Composable
@@ -27,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,9 +32,10 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.spendwise.BottomNavigation
 import com.example.spendwise.Data.model.ExpenseEntity
+import com.example.spendwise.R
 import com.example.spendwise.Utils
-import com.example.spendwise.Utils.formatDateForChart
 import com.example.spendwise.ui.theme.Inter
 import com.example.spendwise.ui.theme.Zinc
 import com.example.spendwise.viewModel.HomeViewModel
@@ -60,33 +59,18 @@ import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.cartesian.data.LineCartesianLayerModel
 import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
-import java.text.DateFormatSymbols
-import java.util.Locale
 
 
 @Composable
-fun StatsScreen(navController: NavController) {
-    val viewModel: StatsViewModel =
-        StatsViewModelFactory(LocalContext.current).create(StatsViewModel::class.java)
+fun StatsScreen(navController: NavController, items: List<BottomNavigation>, viewModel: StatsViewModel) {
+
     val state = viewModel.entries.collectAsState(initial = emptyList())
 
     val isExpenseSelected = remember { mutableStateOf(true) }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = { BottomBar(navController = rememberNavController()) },
-        topBar = {
-            TopAppBar(
-                name = "Statistics",
-                onBackClick = { navController.popBackStack() },
-                icon = Icons.Default.Build
-            )
-        }
-    ) { innerPadding ->
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
         ) {
             val entries = viewModel.getEntriesForChart(state.value)
             ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -138,8 +122,6 @@ fun StatsScreen(navController: NavController) {
             }, list = if (isExpenseSelected.value) Spendstate.value else incomeState.value , HviewModel, navController)
             }
         }
-    }
-
 }
 
 @Composable
@@ -152,13 +134,13 @@ fun TopSpending(
     LazyColumn(modifier = modifier.padding(16.dp)) {
         item {
             Box(modifier = Modifier.fillMaxWidth()) {
-                androidx.compose.material3.Text(
+                Text(
                     text = "Top Spending",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = Inter
                 )
-                androidx.compose.material3.Text(
+                Text(
                     text = "See All",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light,
@@ -196,8 +178,6 @@ fun LineChart(entries: List<LineCartesianLayerModel.Entry>, modifier: Modifier) 
             val yvalues = entries.map { it.y }
             lineSeries { series( xvalues, yvalues) }
             }
-
-
         }
     }
     CartesianChartHost(
@@ -236,7 +216,7 @@ fun LineChart(entries: List<LineCartesianLayerModel.Entry>, modifier: Modifier) 
 @Preview(showBackground = true)
 @Composable
 private fun preview() {
-    StatsScreen(rememberNavController())
+//    StatsScreen(rememberNavController())
 }
 
 
