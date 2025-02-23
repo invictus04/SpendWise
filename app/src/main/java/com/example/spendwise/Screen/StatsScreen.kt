@@ -34,6 +34,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.spendwise.BottomNavigation
 import com.example.spendwise.Data.model.ExpenseEntity
+import com.example.spendwise.NavScreen
 import com.example.spendwise.R
 import com.example.spendwise.Utils
 import com.example.spendwise.ui.theme.Inter
@@ -111,8 +112,7 @@ fun StatsScreen(navController: NavController, items: List<BottomNavigation>, vie
                         end.linkTo((parent.end))
                     }
                     .fillMaxWidth())
-                val HviewModel: HomeViewModel =
-                    HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
+                val HviewModel: HomeViewModel = HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
                 val Spendstate = HviewModel.spending.collectAsState(initial = emptyList())
                 val incomeState = HviewModel.income.collectAsState(initial = emptyList())
             TopSpending(modifier = Modifier.constrainAs(Spending){
@@ -148,7 +148,7 @@ fun TopSpending(
                         .align(
                             Alignment.CenterEnd
                         )
-                        .clickable { navController.navigate("/all") },
+                        .clickable { navController.navigate(NavScreen.All.route) },
                     fontFamily = Inter
                 )
             }

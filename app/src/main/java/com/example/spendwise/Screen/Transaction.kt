@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -190,8 +192,8 @@ fun DataBox(modifier: Modifier = Modifier, onAddExpenseClick: (model: ExpenseEnt
                 .clickable { dateDialogVisibility.value = true },
             enabled = false,
             colors = OutlinedTextFieldDefaults.colors(
-                disabledBorderColor = Color.Black,
-                disabledTextColor = Color.Black
+                disabledBorderColor = Color.Gray,
+                disabledTextColor = Color.Gray
             )
         )
         Spacer(modifier = Modifier.size(8.dp))
@@ -263,7 +265,8 @@ fun ExpenseDatePicker(
     val datePickerState = rememberDatePickerState()
     val selectedDate = datePickerState.selectedDateMillis ?: 0L
 
-    DatePickerDialog(onDismissRequest = { onDismiss() }, confirmButton = {
+    DatePickerDialog(
+        onDismissRequest = { onDismiss() }, confirmButton = {
         TextButton(onClick = { onDateSelected(selectedDate) }) {
             Text(text = "Confirm", fontFamily = Inter)
         }
@@ -293,7 +296,12 @@ fun ExpenseDropDown(listOfItems: List<String>, onSelectedItems: (item: String) -
         expanded = expanded.value,
         onExpandedChange = { expanded.value = !expanded.value }) {
         TextField(
-            colors = T,
+            colors = TextFieldDefaults.colors(
+                unfocusedIndicatorColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent
+            ),
             value = selectedItem.value, onValueChange = { },
             modifier = Modifier
                 .fillMaxWidth()
@@ -308,14 +316,14 @@ fun ExpenseDropDown(listOfItems: List<String>, onSelectedItems: (item: String) -
             listOfItems.forEach {
                 DropdownMenuItem(
                     text = { Text(text = it, fontFamily = Inter) }, onClick = {
-                    selectedItem.value = it
-                    onSelectedItems(it)
-                    expanded.value = false
-                },
+                        selectedItem.value = it
+                        onSelectedItems(it)
+                        expanded.value = false
+                    },
                     colors = MenuItemColors(
                         textColor = Color.DarkGray,
-                        disabledTextColor = Color.DarkGray ,
-                        disabledLeadingIconColor = Color.DarkGray ,
+                        disabledTextColor = Color.DarkGray,
+                        disabledLeadingIconColor = Color.DarkGray,
                         disabledTrailingIconColor = Color.DarkGray,
                         leadingIconColor = Color.DarkGray,
                         trailingIconColor = Color.DarkGray

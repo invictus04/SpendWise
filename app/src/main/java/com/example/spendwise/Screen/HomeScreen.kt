@@ -305,7 +305,6 @@ fun TransactionItem(title: String, amount: String, icon: Int, date: String, colo
 @Composable
 fun allExpensesScreen(navController: NavController) {
     val viewModel: HomeViewModel = HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
-
     val state = viewModel.expenses.collectAsState(initial = emptyList())
 
         Surface(modifier = Modifier.fillMaxSize())
