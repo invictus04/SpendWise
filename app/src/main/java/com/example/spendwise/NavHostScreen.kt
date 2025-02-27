@@ -1,6 +1,5 @@
 package com.example.spendwise
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -136,7 +135,7 @@ fun NavHostScreen() {
                     StatsScreen(navController, bottomNavigationItems, viewModel)
                 }
                 composable(BottomNavigation.Profile.route) {
-                    ProfileScreen(navController, bottomNavigationItems)
+                    ProfileScreen(navController)
                 }
             }
 
@@ -145,7 +144,7 @@ fun NavHostScreen() {
                     addTransation(navController)
                 }
                 composable(NavScreen.All.route) {
-                    allExpensesScreen(navController)
+                    allExpensesScreen()
                 }
             }
 

@@ -47,7 +47,6 @@ object Utils {
         } catch (e: ParseException) {
             e.printStackTrace()
         }
-//        println("Today is $date")
         return date.time
     }
 

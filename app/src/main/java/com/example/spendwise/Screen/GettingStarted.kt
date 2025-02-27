@@ -2,6 +2,7 @@ package com.example.spendwise.Screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,9 +12,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -33,11 +44,25 @@ import com.example.spendwise.NavScreen
 import com.example.spendwise.R
 import com.example.spendwise.ui.theme.Inter
 import com.example.spendwise.ui.theme.Zinc
+import com.example.spendwise.ui.theme.bg_light
 import com.example.spendwise.ui.theme.dark
 import com.example.spendwise.ui.theme.light
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GettingStarted(navController: NavController) {
+
+    val modalSheetState = rememberModalBottomSheetState()
+    var isExpanded by remember { mutableStateOf(false) }
+
+    var userId by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var age by remember { mutableStateOf("") }
+    var dob by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
+
+
     Surface(modifier = Modifier.fillMaxSize()) {
         Image(painter = painterResource(id = R.drawable.back), contentDescription = null,
             modifier = Modifier.fillMaxHeight(),
@@ -68,7 +93,7 @@ fun GettingStarted(navController: NavController) {
                     start.linkTo(parent.start)
                 })
 
-            Button(onClick = { navController.navigate(BottomNavigation.Home.route)},
+            Button(onClick = { isExpanded = true },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = light,
                     contentColor = Color.White
@@ -85,6 +110,92 @@ fun GettingStarted(navController: NavController) {
                     ) {
                 Text(text = "Getting Started", fontFamily = Inter,
                     fontSize = 16.sp)
+            }
+        }
+
+        if (isExpanded){
+            ModalBottomSheet(
+                onDismissRequest = {
+                    isExpanded = false
+                },
+                sheetState = modalSheetState,
+                shape = RoundedCornerShape(topStart =16.dp, topEnd = 16.dp),
+                tonalElevation = 16.dp,
+                containerColor = bg_light
+
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Enter Some Details",
+                        fontFamily = Inter,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 25.sp,
+                        modifier = Modifier.padding(4.dp),
+                        color = Color.DarkGray
+                        )
+
+                    TextField(value = userId,
+                        onValueChange = {userId = it},
+                        modifier = Modifier.fillMaxWidth().padding(8.dp),
+                        label = { Text(
+                            text = "Enter your id",
+                            fontFamily = Inter
+                        ) },
+                    )
+
+                    TextField(value = name,
+                        onValueChange = {name = it},
+                        modifier = Modifier.fillMaxWidth().padding(8.dp),
+                        label = { Text(
+                            text = "Enter your name",
+                            fontFamily = Inter
+                        ) }
+                    )
+
+                    TextField(value = age,
+                        onValueChange = {age = it},
+                        modifier = Modifier.fillMaxWidth().padding(8.dp),
+                        label = { Text(
+                            text = "Enter your age",
+                            fontFamily = Inter
+                        ) }
+                    )
+
+                    TextField(value = dob,
+                        onValueChange = {dob = it},
+                        modifier = Modifier.fillMaxWidth().padding(8.dp),
+                        label = { Text(
+                            text = "DD/MM/YYYY",
+                            fontFamily = Inter
+                        ) }
+                    )
+                    TextField(value = gender,
+                        onValueChange = {gender = it},
+                        modifier = Modifier.fillMaxWidth().padding(8.dp),
+                        label = { Text(
+                            text = "Enter your Gender",
+                            fontFamily = Inter
+
+                        ) }
+                    )
+                    TextField(value = phoneNumber,
+                        onValueChange = {phoneNumber = it},
+                        modifier = Modifier.fillMaxWidth().padding(8.dp),
+                        label = { Text(
+                            text = "Enter you Phone Number",
+                            fontFamily = Inter
+                        ) }
+                    )
+
+                    Button(
+                        onClick = {navController.navigate(BottomNavigation.Home.route)}
+                    ) {
+                        Text(text = "Confirm")
+                    }
+                }
             }
         }
 

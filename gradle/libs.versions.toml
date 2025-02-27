@@ -1,8 +1,8 @@
 [versions]
-agp = "8.5.0"
+agp = "8.8.2"
 constraintlayoutCompose = "1.1.0"
 core = "1.9.0"
-kotlin = "1.9.0"
+kotlin = "2.0.21"
 coreKtx = "1.13.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -12,6 +12,8 @@ activityCompose = "1.9.0"
 composeBom = "2023.08.00"
 material = "1.7.5"
 navigationCompose = "2.8.3"
+roomCompiler = "2.5.0"
+roomRuntime = "2.6.1"
 ui = "1.7.5"
 uiToolingPreview = "1.7.5"
 vico = "2.0.0-beta.3"
@@ -21,6 +23,10 @@ androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constr
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-compiler-v250 = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 core = { module = "com.patrykandpatrick.vico:core", version.ref = "core" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -45,4 +51,6 @@ vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", ve
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
 

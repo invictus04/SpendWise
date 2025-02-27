@@ -25,13 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
-import com.example.spendwise.BottomNavigation
+import androidx.navigation.compose.rememberNavController
 import com.example.spendwise.R
 import com.example.spendwise.ui.theme.Inter
 import com.example.spendwise.ui.theme.dark
 
 @Composable
-fun ProfileScreen(navController: NavController, items: List<BottomNavigation>) {
+fun ProfileScreen(navController: NavController) {
         Surface(modifier = Modifier
             .fillMaxSize()) {
             ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -139,5 +139,5 @@ fun ProfileScreen(navController: NavController, items: List<BottomNavigation>) {
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-//    ProfileScreen(rememberNavController())
+    ProfileScreen(rememberNavController())
 }
