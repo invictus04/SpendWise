@@ -20,7 +20,7 @@ class AddExpenseViewModel(val dao: ExpenseDao): ViewModel() {
 
 }
 
-class AddExpenseViewModelFactory(private  val context: Context): ViewModelProvider.Factory{
+class AddExpenseViewModelFactory(private val context: Context): ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(AddExpenseViewModel::class.java)){
             val dao = ExpenseDatabase.getDatabase(context).expenseDAO()

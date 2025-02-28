@@ -29,9 +29,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.spendwise.R
 import com.example.spendwise.ui.theme.Inter
 import com.example.spendwise.ui.theme.dark
+import com.example.spendwise.viewModel.ProfileViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, profileViewModel: ProfileViewModel) {
+
+    val user = profileViewModel.user
+    println(user)
         Surface(modifier = Modifier
             .fillMaxSize()) {
             ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -71,67 +75,75 @@ fun ProfileScreen(navController: NavController) {
                         }
                         .padding(top = 220.dp)
                         .size(100.dp))
-                Text(
-                    text = "@Your_Id",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    fontFamily = Inter,
-                    color = dark,
-                    modifier = Modifier.constrainAs(id){
-                        top.linkTo(profile.bottom)
+                user?.let {
+                    Text(
+                        text = "@${it.id}",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = Inter,
+                        color = dark,
+                        modifier = Modifier.constrainAs(id){
+                            top.linkTo(profile.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }.padding(top=8.dp)
+                    )
+                    Box(modifier = Modifier.constrainAs(section) {
+                        top.linkTo(id.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                    }.padding(top=8.dp)
-                )
-                Box(modifier = Modifier.constrainAs(section) {
-                    top.linkTo(id.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }.padding(top = 16.dp)){
-                    Column {
-                        Row(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly){
-                            Text(text = "Name :", fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
-                            Text(text = "Your_Name",  fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
-                        }
-                        Row(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly){
-                            Text(text = "Age :", fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
-                            Text(text = "Your_Age",  fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
-                        }
-                         Row(modifier = Modifier
-                             .fillMaxWidth()
-                             .padding(vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly){
-                            Text(text = "DOB :", fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
-                            Text(text = "Your_DOB",  fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
-                        }
-                         Row(modifier = Modifier
-                             .fillMaxWidth()
-                             .padding(vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly){
-                            Text(text = "Gender :", fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
-                            Text(text = "Your_Gender",  fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
-                        }
-                        Row(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly){
-                            Text(text = "Phone Number :", fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
-                            Text(text = "Your_Number",  fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
+                    }.padding(top = 16.dp))
+                    {
+
+                        Column {
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceEvenly){
+                                Text(text = "Name :", fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
+                                Text(text = it.name,  fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
+                            }
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceEvenly){
+                                Text(text = "Age :", fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
+                                Text(text = it.age.toString(), fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
+
+                            }
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceEvenly){
+                                Text(text = "DOB :", fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
+                                Text(text = it.dob,  fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
+                            }
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceEvenly){
+                                Text(text = "Gender :", fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
+                                Text(text = it.gender,  fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
+                            }
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceEvenly){
+                                Text(text = "Phone Number :", fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
+                                Text(text = it.phoneNumber,  fontSize = 25.sp, fontFamily = Inter, fontWeight = FontWeight.Light)
+                            }
                         }
 
                     }
-                }
+
+                } ?: Text("No user Data is Available")
+
+
             }
     }
 }
@@ -139,5 +151,5 @@ fun ProfileScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen(rememberNavController())
+//    ProfileScreen(rememberNavController())
 }

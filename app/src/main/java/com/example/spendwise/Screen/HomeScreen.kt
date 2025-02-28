@@ -282,7 +282,7 @@ fun allExpensesScreen() {
     val viewModel: HomeViewModel = HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
     val state = viewModel.expenses.collectAsState(initial = emptyList())
 
-        Surface(modifier = Modifier.fillMaxSize())
+    Surface(modifier = Modifier.fillMaxSize())
         {
             ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                 val (lazyColumn) = createRefs()

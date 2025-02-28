@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -41,6 +42,8 @@ import com.example.spendwise.ui.theme.Inter
 import com.example.spendwise.ui.theme.light
 import com.example.spendwise.viewModel.HomeViewModel
 import com.example.spendwise.viewModel.HomeViewModelFactory
+import com.example.spendwise.viewModel.ProfileViewModel
+import com.example.spendwise.viewModel.ProfileViewModelFactory
 import com.example.spendwise.viewModel.StatsViewModel
 import com.example.spendwise.viewModel.StatsViewModelFactory
 
@@ -69,6 +72,11 @@ sealed class BottomNavigation(val route: String, val icon: Int) {
 @Composable
 fun NavHostScreen() {
     val navController = rememberNavController()
+
+
+    val profileViewModel: ProfileViewModel = viewModel(
+        factory = ProfileViewModelFactory(LocalContext.current)
+    )
 
     val bottomNavigationItems = listOf(
         BottomNavigation.Home,
@@ -116,7 +124,8 @@ fun NavHostScreen() {
                     SplashScreen(navController)
                 }
                 composable(OnBoardingRoutes.GettingStarted.route) {
-                    GettingStarted(navController)
+
+                    GettingStarted(navController, profileViewModel)
                 }
             }
 
@@ -125,17 +134,16 @@ fun NavHostScreen() {
                 route = "bottom"
             ) {
                 composable(BottomNavigation.Home.route) {
-                    val viewModel: HomeViewModel =
-                        HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
+                    val viewModel: HomeViewModel = HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
                     HomeScreen(navController, viewModel)
                 }
                 composable(BottomNavigation.Stats.route) {
-                    val viewModel: StatsViewModel =
-                        StatsViewModelFactory(LocalContext.current).create(StatsViewModel::class.java)
+                    val viewModel: StatsViewModel = StatsViewModelFactory(LocalContext.current).create(StatsViewModel::class.java)
                     StatsScreen(navController, bottomNavigationItems, viewModel)
                 }
                 composable(BottomNavigation.Profile.route) {
-                    ProfileScreen(navController)
+
+                    ProfileScreen(navController, profileViewModel)
                 }
             }
 
